@@ -1,0 +1,29 @@
+name: Build Quest APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Java 17 instellen
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle rechten geven
+        run: chmod +x gradlew
+
+      - name: APK bouwen
+        run: ./gradlew assembleDebug
+
+      - name: APK klaarzetten om te downloaden
+        uses: actions/upload-artifact@v4
+        with:
+          name: Quest-Camera-App
+          path: "**/build/outputs/apk/debug/*.apk"
